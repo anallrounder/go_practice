@@ -1,12 +1,17 @@
 package accounts
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 // Account sturct
 type Account struct {
 	owner   string //private
 	balance int    //private
 }
+
+var errNoMoney = errors.New("can't withdraw")
 
 // NewAccount creates Account
 func NewAccount(owner string) *Account {
@@ -16,7 +21,6 @@ func NewAccount(owner string) *Account {
 
 // Deposit x amount on your account
 func (a *Account) Deposit(amonunt int) {
-	fmt.Println("Gonna deposit", amonunt)
 	a.balance += amonunt
 }
 
@@ -26,7 +30,24 @@ func (a Account) Balance() int {
 }
 
 // Withdraw X amount from your account
-func (a *Account) Withdraw(amonunt int) {
-	fmt.Println("Gonna withdraw", amonunt)
-	a.balance -= amonunt
+func (a *Account) Withdraw(amonunt int) error {
+	if a.balance < amonunt {
+		return errNoMoney //errors.New("can't withdraw you are poor")
+	}
+	a.balance -= amonunt //go는 else필요x
+	return nil           // js,파이썬의 null or none과 같음
 }
+
+// ChangeOwner of the account
+func (a *Account) ChnageOwner(newOwner string) {
+	a.owner = newOwner
+}
+
+// Owner of the account
+func (a Account) Owner() string {
+	return a.owner
+}
+
+func (a Account) String() string {
+	return fmt.Sprint(a.Owner(), "'s account\nHas: ", a.Balance())
+} //go가 내부적으로 호출하는 method를 사용하는 방법
