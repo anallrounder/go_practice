@@ -7,5 +7,9 @@ import (
 
 func main() {
 	dictionary := mydict.Dictionary{"first": "First world"}
-	fmt.Println(dictionary["first"])
+	definition, err := dictionary.Search("second")
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(definition)
 }
