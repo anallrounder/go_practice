@@ -17,12 +17,13 @@ func (d Dictionary) Search(word string) (string, error) {
 	return "", errNotFound
 }
 
-// Add
+// Add a word to the dictionary
 func (d Dictionary) Add(word, def string) error {
 	_, err := d.Search(word)
-	if err == errNotFound {
+	switch err {
+	case errNotFound:
 		d[word] = def
-	} else if err == nill {
+	case nil:
 		return errWordExists
 	}
 	return nil
