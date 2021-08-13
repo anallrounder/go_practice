@@ -6,7 +6,6 @@ import (
 )
 
 func main() {
-	dictionary := mydict.Dictionary{}
-	dictionary["hello"] = "hello"
-	fmt.Println(dictionary)
+	dictionary := mydict.Dictionary{"first": "First world"}
+	fmt.Println(dictionary["first"])
 }
