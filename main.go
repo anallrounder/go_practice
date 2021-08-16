@@ -5,13 +5,14 @@ import (
 	"net/http"
 )
 
-type result struct {
+type requestResult struct {
 	url    string
 	status string
 }
 
 func main() {
-	c := make(chan result)
+	results := make(map[string]string)
+	c := make(chan requestResult)
 	urls := []string{
 		"https://www.airbnb.com/",
 		"https://www.google.com/",
@@ -27,18 +28,20 @@ func main() {
 		go hitURL(url, c)
 	}
 	for i := 0; i < len(urls); i++ {
-		fmt.Println(<-c)
+		result := <-c
+		results[result.url] = result.status
+	}
+
+	for url, status := range results {
+		fmt.Println(url, status)
 	}
 }
 
-func hitURL(url string, c chan<- result) {
-	//fmt.Println("Checking  ", url)
+func hitURL(url string, c chan<- requestResult) {
 	resp, err := http.Get(url)
 	status := "OK"                            //default value
 	if err != nil || resp.StatusCode >= 400 { //에러 있거나 400이상(에러)
 		status = "FAILED"
-		//c <- result{url: url, status: "FAILED"}
 	}
-	c <- result{url: url, status: status}
-	//c <- result{url: url, status: "OK"}
+	c <- requestResult{url: url, status: status}
 }
