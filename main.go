@@ -28,8 +28,15 @@ func main() {
 	results["hello"] = "Hello"
 	for _, url := range urls {
 		//fmt.Println(url)
-		hitURL(url)
+		result := "OK"
+		err := hitURL(url)
+		if err != nil { //error가 있으면
+			result = "FAILED"
+		}
+		results[url] = result
 	}
+
+	fmt.Println(results)
 }
 
 func hitURL(url string) error {
