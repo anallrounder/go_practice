@@ -6,14 +6,20 @@ import (
 )
 
 func main() {
-	go count("sun")
-	go count("ogu")
-	time.Sleep(time.Second * 5) //*5 goroutines가 5초동안 살아있을 수 있다.
+	c := make(chan bool)
+	people := [2]string{"sun", "ogu"}
+	for _, person := range people {
+		go isSexy(person, c)
+	}
+	//result := <-c
+	//fmt.Println(result)
+	fmt.Println(<-c)
+	fmt.Println(<-c) //두개 받으려면 하나더 추가
+	fmt.Println(<-c)
 }
 
-func count(person string) {
-	for i := 0; i < 10; i++ {
-		fmt.Println(person, "looks great", i)
-		time.Sleep(time.Second) //time은 go package이다
-	}
+func isSexy(person string, c chan bool) {
+	time.Sleep(time.Second * 5)
+	fmt.Println((person))
+	c <- true
 }
