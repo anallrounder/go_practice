@@ -7,7 +7,8 @@ import (
 
 func main() {
 	go count("sun")
-	count("ogu")
+	go count("ogu")
+	time.Sleep(time.Second * 5) //*5 goroutines가 5초동안 살아있을 수 있다.
 }
 
 func count(person string) {
