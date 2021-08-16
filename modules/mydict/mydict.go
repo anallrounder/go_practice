@@ -8,7 +8,7 @@ type Dictionary map[string]string
 var (
 	errNotFound   = errors.New("not Found")
 	errWordExists = errors.New("That word alreay exists")
-	errCantUpdate = errors.New("can't update non-existing word")
+	errCantUpdate = errors.New("can't update non-exmmisting word")
 ) // looks better
 
 // Search for a word
@@ -42,4 +42,10 @@ func (d Dictionary) Update(word, definition string) error {
 		return errCantUpdate
 	}
 	return nil
+}
+
+// Delete a word
+func (d Dictionary) Delete(word string) {
+	//단어가 존재하면 삭제하도록 구현해보자.
+	delete(d, word)
 }
